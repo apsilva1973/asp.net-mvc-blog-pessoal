@@ -9,18 +9,17 @@ using System.Web.Mvc;
 
 namespace BlogPessoal.Web.Controllers
 {
-    public class CategoriasDeArtigoController : Controller
+    public class ArtigoController : Controller
     {
-
         private BlogPessoalContexto _ctx = new BlogPessoalContexto();
-        // GET: CategoriasDeArtigo 
+        // GET: Artigo 
         public ActionResult Index()
         {
-            var categorias = _ctx.CategoriaDeArtigo
-                .OrderBy(t => t.Nome)
+            var artigos = _ctx.Artigo
+                .OrderBy(t => t.Titulo)
                 .ToList();
 
-            return View(categorias);
+            return View(artigos);
         }
 
         public ActionResult Create()
@@ -30,59 +29,58 @@ namespace BlogPessoal.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CategoriaDeArtigo categoria)
+        public ActionResult Create(Artigo artigo)
         {
             if (ModelState.IsValid)
             {
-                _ctx.CategoriaDeArtigo.Add(categoria);
+                _ctx.Artigo.Add(artigo);
                 _ctx.SaveChanges();
                 return RedirectToAction("index");
             }
 
-            return View(categoria);
+            return View(artigo);
         }
 
-        public ActionResult Edit(int? id )
+        public ActionResult Edit(int? id)
         {
-            if (id == null)            
+            if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var categoria = _ctx.CategoriaDeArtigo.Find(id);
-            if (categoria == null)
+            var artigo = _ctx.Artigo.Find(id);
+            if (artigo == null)
                 return HttpNotFound();
-            return View(categoria);            
+            return View(artigo);
         }
 
         [HttpPost]
-        public ActionResult Edit(CategoriaDeArtigo categoria)
+        public ActionResult Edit(Artigo artigo)
         {
             if (ModelState.IsValid)
             {
-                _ctx.Entry(categoria).State = EntityState.Modified;
+                _ctx.Entry(artigo).State = EntityState.Modified;
                 _ctx.SaveChanges();
                 return RedirectToAction("index");
             }
 
-            return View(categoria);
+            return View(artigo);
         }
 
         public ActionResult Delete(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var categoria = _ctx.CategoriaDeArtigo.Find(id);
-            if (categoria == null)
+            var artigo = _ctx.Artigo.Find(id);
+            if (artigo == null)
                 return HttpNotFound();
-            return View(categoria);
+            return View(artigo);
         }
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var categoria = _ctx.CategoriaDeArtigo.Find(id);
-            _ctx.CategoriaDeArtigo.Remove(categoria);
+            var artigo = _ctx.Artigo.Find(id);
+            _ctx.Artigo.Remove(artigo);
             _ctx.SaveChanges();
             return RedirectToAction("index");
-        }  
-
+        }
     }
 }
